@@ -86,10 +86,6 @@ export default function InstallmentCalculator() {
       calculatedInstallment = calculateInstallment(price, down, period)
       setMonthlyInstallment(calculatedInstallment.toFixed(2))
       newCalculatedField = "installment"
-    } else if (monthlyInstallment && repaymentPeriod && !downPayment) {
-      calculatedDown = calculateDownPayment(price, installment, period)
-      setDownPayment(calculatedDown.toFixed(2))
-      newCalculatedField = "down"
     } else if (downPayment && monthlyInstallment && !repaymentPeriod) {
       calculatedPeriod = calculatePeriod(price, down, installment)
       setRepaymentPeriod(calculatedPeriod.toFixed(0))
@@ -214,11 +210,7 @@ export default function InstallmentCalculator() {
                 />
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                <p className="text-sm text-blue-800 dark:text-blue-200 text-center">
-                  <strong>معدل الربح الثابت:</strong> 42% سنوياً (3.5% شهرياً)
-                </p>
-              </div>
+
             </CardContent>
           </Card>
 
