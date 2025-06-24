@@ -68,7 +68,7 @@ export default function InstallmentCalculator() {
 
   const validateAndCalculate = () => {
     const price = parseNumber(purchasePrice || "0");
-    const down = parseNumber(downPayment || "0");
+    const down = parseNumber(downPayment === "" ? "0" : downPayment);
     const period = parseNumber(repaymentPeriod || "0");
     const installment = parseNumber(monthlyInstallment || "0");
 
@@ -152,6 +152,10 @@ export default function InstallmentCalculator() {
       calculatedInstallment = calculateInstallment(price, down, period);
       setMonthlyInstallment(calculatedInstallment.toFixed(2));
       newCalculatedField = "installment";
+    } else if (isFocus === "price") {
+      calculatedInstallment = calculateInstallment(price, down, period);
+      setMonthlyInstallment(calculatedInstallment.toFixed(2));
+      newCalculatedField = "installment";
     }
 
     setResults({
@@ -171,6 +175,12 @@ export default function InstallmentCalculator() {
       setError("");
     }
   };
+
+  useEffect(() => {
+    if (downPayment === "") {
+      setDownPayment("0")
+    }
+  })
 
   useEffect(() => {
     if (purchasePrice) {
@@ -207,13 +217,15 @@ export default function InstallmentCalculator() {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="purchasePrice" className="text-sm font-medium">
-                  سعر الشراء (جنيه مصري) *
+                  سعر الكاش *
                 </Label>
                 <Input
                   id="purchasePrice"
                   type="number"
-                  placeholder="أدخل سعر الشراء"
+                  placeholder="أدخل سعر الكاش"
                   value={purchasePrice}
+                  onFocus={() => setIsFocus("price")}
+                  onBlur={() => setIsFocus("")}
                   onChange={(e) => setPurchasePrice(e.target.value)}
                   className="text-right"
                 />
@@ -221,7 +233,7 @@ export default function InstallmentCalculator() {
 
               <div className="space-y-2">
                 <Label htmlFor="downPayment" className="text-sm font-medium">
-                  الدفعة المقدمة (جنيه مصري)
+                  المقدم (ان وجد)
                   {calculatedField === "down" && (
                     <span className="text-green-600 text-xs mr-2">
                       (محسوبة تلقائياً)
@@ -249,7 +261,7 @@ export default function InstallmentCalculator() {
                   htmlFor="repaymentPeriod"
                   className="text-sm font-medium"
                 >
-                  فترة السداد (بالشهور)
+                  فترة السداد
                   {calculatedField === "period" && (
                     <span className="text-green-600 text-xs mr-2">
                       (محسوبة تلقائياً)
@@ -277,7 +289,7 @@ export default function InstallmentCalculator() {
                   htmlFor="monthlyInstallment"
                   className="text-sm font-medium"
                 >
-                  القسط الشهري (جنيه مصري)
+                  القسط الشهري
                   {calculatedField === "installment" && (
                     <span className="text-green-600 text-xs mr-2">
                       (محسوب تلقائياً)
