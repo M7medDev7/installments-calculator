@@ -10,7 +10,8 @@ import { Calculator, AlertTriangle } from "lucide-react";
 export default function InstallmentCalculator() {
   const [purchasePrice, setPurchasePrice] = useState<string>("");
   const [downPayment, setDownPayment] = useState<string>("");
-  const [repaymentPeriod, setRepaymentPeriod] = useState<string>("");
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [repaymentPeriod, setRepaymentPeriod] = useState<string>("12");
   const [monthlyInstallment, setMonthlyInstallment] = useState<string>("");
   const [isFocus, setIsFocus] = useState<string>("");
   const [calculatedField, setCalculatedField] = useState<string>("");
@@ -68,8 +69,8 @@ export default function InstallmentCalculator() {
 
   const validateAndCalculate = () => {
     const price = parseNumber(purchasePrice || "0");
-    const down = parseNumber(downPayment === "" ? "0" : downPayment);
-    const period = parseNumber(repaymentPeriod || "0");
+    const down = parseNumber((downPayment === "" ? "0" : downPayment));
+    const period = parseNumber(repaymentPeriod || "1");
     const installment = parseNumber(monthlyInstallment || "0");
 
     if (price <= 0) {
@@ -84,7 +85,7 @@ export default function InstallmentCalculator() {
       monthlyInstallment ? "installment" : "",
     ].filter(Boolean);
 
-    if (filledFields.length < 2) {
+    if ((downPayment === "" && filledFields.length < 1) || (downPayment !== "" && filledFields.length < 1)) {
       setError(
         "يجب ملء حقلين على الأقل من الثلاثة (الدفعة المقدمة، القسط الشهري، فترة السداد)"
       );
@@ -177,8 +178,9 @@ export default function InstallmentCalculator() {
   };
 
   useEffect(() => {
-    if (downPayment === "") {
-      setDownPayment("0")
+    if (!isUpdated) {
+      setDownPayment("0");
+      setIsUpdated(true)
     }
   })
 
