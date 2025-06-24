@@ -163,9 +163,9 @@ export default function InstallmentCalculator() {
     if (missingAmount > 1) {
       // Allow for small rounding differences
       setError(
-        `القيم المدخلة غير كافية لتغطية سعر المنتج بعد إضافة الربح. تحتاج إلى: ${formatNumber(
+        ` المبلغ غير كافي لتغطية سعر المنتج . تحتاج إلى: ${formatNumber(
           missingAmount
-        )} جنيه إضافي`
+        )} جنيه`
       );
     } else {
       setError("");
@@ -310,37 +310,27 @@ export default function InstallmentCalculator() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {error && (
-                <Alert variant="destructive">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertDescription className="text-right">
-                    {error}
-                  </AlertDescription>
-                </Alert>
-              )}
-
-              {results && !error && (
+              {results && (
                 <div className="space-y-4">
-                  <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
-                    <h3 className="font-semibold text-green-800 dark:text-green-200 mb-3 text-center">
-                      ✅ الحساب صحيح
-                    </h3>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="font-medium">
-                          إجمالي المبلغ مع الربح:
-                        </span>
-                        <span>
-                          {formatNumber(results.totalWithProfit)} جنيه
-                        </span>
+                  {error && (
+                    <Alert variant="destructive">
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription className="text-right">
+                        {error}
+                      </AlertDescription>
+                    </Alert>
+                  )}{" "}
+                  {purchasePrice &&
+                    downPayment &&
+                    repaymentPeriod &&
+                    monthlyInstallment &&
+                    !error && (
+                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                        <h3 className="font-semibold text-green-800 dark:text-green-200 text-center">
+                          ✅ الحساب صحيح
+                        </h3>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="font-medium">إجمالي المدفوعات:</span>
-                        <span>{formatNumber(results.totalPaid)} جنيه</span>
-                      </div>
-                    </div>
-                  </div>
-
+                    )}
                   {purchasePrice &&
                     downPayment &&
                     repaymentPeriod &&
