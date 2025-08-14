@@ -207,7 +207,7 @@ export default function InstallmentCalculator() {
       className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4"
       dir="rtl"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <div className="flex justify-center items-center gap-3 mb-4">
             <Calculator className="h-8 w-8 text-blue-600" />
@@ -220,9 +220,9 @@ export default function InstallmentCalculator() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Input Form */}
-          <Card className="shadow-lg">
+          {/* <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-xl text-center">
                 بيانات الحساب
@@ -326,7 +326,7 @@ export default function InstallmentCalculator() {
                 />
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* Installments Suggestions */}
           <Card className="shadow-lg">
@@ -335,7 +335,106 @@ export default function InstallmentCalculator() {
                 الأقساط المقترحه
               </CardTitle>
             </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
+                  <Label htmlFor="purchasePrice" className="text-xs font-medium">
+                    سعر الكاش *
+                  </Label>
+                  <Input
+                    id="purchasePrice"
+                    type="number"
+                    placeholder="أدخل سعر الكاش"
+                    value={purchasePrice}
+                    onFocus={() => setIsFocus("price")}
+                    onBlur={() => setIsFocus("")}
+                    onChange={(e) => setPurchasePrice(e.target.value)}
+                    className="text-right"
+                  />
+                </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="downPayment" className="text-xs font-medium">
+                    المقدم (ان وجد)
+                    {calculatedField === "down" && (
+                      <span className="text-green-600 text-xs mr-2">
+                        (محسوبة تلقائياً)
+                      </span>
+                    )}
+                  </Label>
+                  <Input
+                    id="downPayment"
+                    type="number"
+                    placeholder="أدخل الدفعة المقدمة"
+                    value={downPayment || ""}
+                    onFocus={() => setIsFocus("down")}
+                    onBlur={() => setIsFocus("")}
+                    onChange={(e) => setDownPayment(e.target.value)}
+                    className={`text-right ${
+                      calculatedField === "down"
+                        ? "bg-green-50 border-green-200"
+                        : ""
+                    }`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="repaymentPeriod"
+                    className="text-xs font-medium"
+                  >
+                    فترة السداد
+                    {calculatedField === "period" && (
+                      <span className="text-green-600 text-xs mr-2">
+                        (محسوبة تلقائياً)
+                      </span>
+                    )}
+                  </Label>
+                  <Input
+                    id="repaymentPeriod"
+                    type="number"
+                    placeholder="أدخل عدد الشهور"
+                    value={repaymentPeriod || ""}
+                    onFocus={() => setIsFocus("period")}
+                    onBlur={() => setIsFocus("")}
+                    onChange={(e) => setRepaymentPeriod(e.target.value || "")}
+                    className={`text-right ${
+                      calculatedField === "period"
+                        ? "bg-green-50 border-green-200"
+                        : ""
+                    }`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="monthlyInstallment"
+                    className="text-xs font-medium"
+                  >
+                    القسط الشهري
+                    {calculatedField === "installment" && (
+                      <span className="text-green-600 text-xs mr-2">
+                        (محسوب تلقائياً)
+                      </span>
+                    )}
+                  </Label>
+                  <Input
+                    id="monthlyInstallment"
+                    type="number"
+                    placeholder="أدخل قيمة القسط الشهري"
+                    value={monthlyInstallment || ""}
+                    onFocus={() => setIsFocus("installment")}
+                    onBlur={() => setIsFocus("")}
+                    onChange={(e) => setMonthlyInstallment(e.target.value)}
+                    className={`text-right ${
+                      calculatedField === "installment"
+                        ? "bg-green-50 border-green-200"
+                        : ""
+                    }`}
+                  />
+                </div>
+              </div>
+            </CardContent>
             <CardContent className="space-y-4">
               { results && (
                 <>
@@ -364,7 +463,7 @@ export default function InstallmentCalculator() {
           </Card>
 
           {/* Results */}
-          <Card className="shadow-lg">
+          <Card className="shadow-lg h-fit">
             <CardHeader>
               <CardTitle className="text-xl text-center">
                 نتائج الحساب
