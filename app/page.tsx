@@ -378,6 +378,40 @@ export default function InstallmentCalculator() {
                   />
                 </div>
 
+                
+              </div>
+            </CardContent>
+            <CardContent className="space-y-4">
+              { results && (
+                <>
+                  {purchasePrice &&
+                    downPayment &&
+                    repaymentPeriod &&
+                    monthlyInstallment &&
+                    suggestions && (
+                    <>
+                        { suggestions.map((ele, key) => (
+                          <div key={key} className="text-center p-3 flex items-center justify-between bg-white dark:bg-gray-700 rounded">
+                            <div className="font-medium text-gray-600 dark:text-gray-300">
+                              {ele.installment_value} جنيه / شهر
+                            </div>
+                            <div className="font-medium text-gray-600 dark:text-gray-300">
+                              {ele.repayment_period} أشهر
+                            </div>
+                          </div>
+                        )) }
+                    </>
+                    )}
+                </>
+              ) }
+            </CardContent>
+            {!purchasePrice && (
+                <div className="text-center text-gray-500 dark:text-gray-400 h-[200px] leading-[150px] select-none">
+                  أدخل سعر الشراء لبدء الحساب
+                </div>
+              )}
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-2">
                   <Label
                     htmlFor="repaymentPeriod"
@@ -433,33 +467,10 @@ export default function InstallmentCalculator() {
                     }`}
                   />
                 </div>
+
+                
               </div>
             </CardContent>
-            <CardContent className="space-y-4">
-              { results && (
-                <>
-                  {purchasePrice &&
-                    downPayment &&
-                    repaymentPeriod &&
-                    monthlyInstallment &&
-                    suggestions && (
-                    <>
-                        { suggestions.map((ele, key) => (
-                          <div key={key} className="text-center p-3 flex items-center justify-between bg-white dark:bg-gray-700 rounded">
-                            <div className="font-medium text-gray-600 dark:text-gray-300">
-                              {ele.installment_value} جنيه / شهر
-                            </div>
-                            <div className="font-medium text-gray-600 dark:text-gray-300">
-                              {ele.repayment_period} أشهر
-                            </div>
-                          </div>
-                        )) }
-                    </>
-                    )}
-                </>
-              ) }
-            </CardContent>
-
           </Card>
 
           {/* Results */}
@@ -540,11 +551,7 @@ export default function InstallmentCalculator() {
                 </div>
               )}
 
-              {!purchasePrice && (
-                <div className="text-center text-gray-500 dark:text-gray-400 py-8">
-                  أدخل سعر الشراء لبدء الحساب
-                </div>
-              )}
+              
             </CardContent>
           </Card>
         </div>
