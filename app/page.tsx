@@ -16,13 +16,16 @@ export default function InstallmentCalculator() {
   const [isFocus, setIsFocus] = useState<string>("");
   const [calculatedField, setCalculatedField] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [suggestions, setSuggestions] = useState<
+  { installment_value: string; repayment_period: number }[]
+>([]);
   const [results, setResults] = useState<{
     totalWithProfit: number;
     totalPaid: number;
     missingAmount: number;
   } | null>(null);
 
-  const MONTHLY_PROFIT_RATE = 0.033; // 3.5% monthly
+  const MONTHLY_PROFIT_RATE = 0.03; // 3.3% monthly
 
   const parseNumber = (value: string): number => {
     return Number.parseFloat(value) || 0;
@@ -165,6 +168,15 @@ export default function InstallmentCalculator() {
       missingAmount,
     });
 
+    const numbers = [3, 6, 9, 12, 15, 18];
+
+    const newSuggestions = numbers.map((n) => ({
+      installment_value: calculateInstallment(price, down, n).toFixed(2),
+      repayment_period: n,
+    }));
+
+    setSuggestions(newSuggestions);
+
     if (missingAmount > 1) {
       // Allow for small rounding differences
       setError(
@@ -195,7 +207,7 @@ export default function InstallmentCalculator() {
       className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4"
       dir="rtl"
     >
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <div className="flex justify-center items-center gap-3 mb-4">
             <Calculator className="h-8 w-8 text-blue-600" />
@@ -208,7 +220,7 @@ export default function InstallmentCalculator() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8">
           {/* Input Form */}
           <Card className="shadow-lg">
             <CardHeader>
@@ -314,6 +326,41 @@ export default function InstallmentCalculator() {
                 />
               </div>
             </CardContent>
+          </Card>
+
+          {/* Installments Suggestions */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-xl text-center">
+                الأقساط المقترحه
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="space-y-4">
+              { results && (
+                <>
+                  {purchasePrice &&
+                    downPayment &&
+                    repaymentPeriod &&
+                    monthlyInstallment &&
+                    suggestions && (
+                    <>
+                        { suggestions.map((ele, key) => (
+                          <div key={key} className="text-center p-3 flex items-center justify-between bg-white dark:bg-gray-700 rounded">
+                            <div className="font-medium text-gray-600 dark:text-gray-300">
+                              {ele.installment_value} جنيه / شهر
+                            </div>
+                            <div className="font-medium text-gray-600 dark:text-gray-300">
+                              {ele.repayment_period} أشهر
+                            </div>
+                          </div>
+                        )) }
+                    </>
+                    )}
+                </>
+              ) }
+            </CardContent>
+
           </Card>
 
           {/* Results */}
