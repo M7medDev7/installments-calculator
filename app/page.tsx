@@ -17,8 +17,8 @@ export default function InstallmentCalculator() {
   const [calculatedField, setCalculatedField] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [suggestions, setSuggestions] = useState<
-  { installment_value: string; repayment_period: number }[]
->([]);
+    { installment_value: string; repayment_period: number }[]
+  >([]);
   const [results, setResults] = useState<{
     totalWithProfit: number;
     totalPaid: number;
@@ -72,7 +72,7 @@ export default function InstallmentCalculator() {
 
   const validateAndCalculate = () => {
     const price = parseNumber(purchasePrice || "0");
-    const down = parseNumber((downPayment === "" ? "0" : downPayment));
+    const down = parseNumber(downPayment === "" ? "0" : downPayment);
     const period = parseNumber(repaymentPeriod || "1");
     const installment = parseNumber(monthlyInstallment || "0");
 
@@ -88,7 +88,10 @@ export default function InstallmentCalculator() {
       monthlyInstallment ? "installment" : "",
     ].filter(Boolean);
 
-    if ((downPayment === "" && filledFields.length < 1) || (downPayment !== "" && filledFields.length < 1)) {
+    if (
+      (downPayment === "" && filledFields.length < 1) ||
+      (downPayment !== "" && filledFields.length < 1)
+    ) {
       setError(
         "يجب ملء حقلين على الأقل من الثلاثة (الدفعة المقدمة، القسط الشهري، فترة السداد)"
       );
@@ -192,9 +195,9 @@ export default function InstallmentCalculator() {
   useEffect(() => {
     if (!isUpdated) {
       setDownPayment("0");
-      setIsUpdated(true)
+      setIsUpdated(true);
     }
-  })
+  });
 
   useEffect(() => {
     if (purchasePrice) {
@@ -215,9 +218,6 @@ export default function InstallmentCalculator() {
               حاسبة الأقساط
             </h1>
           </div>
-          <p className="text-gray-600 dark:text-gray-300">
-            احسب قيمة الأقساط الشهرية بناءً على المعطيات المختلفة
-          </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
@@ -331,14 +331,15 @@ export default function InstallmentCalculator() {
           {/* Installments Suggestions */}
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-xl text-center">
-                الأقساط المقترحه
-              </CardTitle>
+              <CardTitle className="text-xl text-center">احسب الآن</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-2">
-                  <Label htmlFor="purchasePrice" className="text-xs font-medium">
+                  <Label
+                    htmlFor="purchasePrice"
+                    className="text-xs font-medium"
+                  >
                     سعر الكاش *
                   </Label>
                   <Input
@@ -377,21 +378,30 @@ export default function InstallmentCalculator() {
                     }`}
                   />
                 </div>
-
-                
               </div>
             </CardContent>
             <CardContent className="space-y-4">
-              { results && (
+              {results && (
                 <>
                   {purchasePrice &&
                     downPayment &&
                     repaymentPeriod &&
                     monthlyInstallment &&
                     suggestions && (
-                    <>
-                        { suggestions.map((ele, key) => (
-                          <div key={key} className="text-center p-3 flex items-center justify-between bg-white dark:bg-gray-700 rounded">
+                      <>
+                        <div className="text-center p-3 flex items-center justify-between bg-slate-300 dark:bg-gray-800 rounded">
+                          <div className="font-medium text-gray-800 dark:text-gray-300">
+                            قيمة القسط
+                          </div>
+                          <div className="font-medium text-gray-800 dark:text-gray-300">
+                            فترة السداد
+                          </div>
+                        </div>
+                        {suggestions.map((ele, key) => (
+                          <div
+                            key={key}
+                            className="text-center p-3 flex items-center justify-between bg-slate-100 dark:bg-gray-600 rounded"
+                          >
                             <div className="font-medium text-gray-600 dark:text-gray-300">
                               {ele.installment_value} جنيه / شهر
                             </div>
@@ -399,17 +409,17 @@ export default function InstallmentCalculator() {
                               {ele.repayment_period} أشهر
                             </div>
                           </div>
-                        )) }
-                    </>
+                        ))}
+                      </>
                     )}
                 </>
-              ) }
+              )}
             </CardContent>
             {!purchasePrice && (
-                <div className="text-center text-gray-500 dark:text-gray-400 h-[200px] leading-[150px] select-none">
-                  أدخل سعر الشراء لبدء الحساب
-                </div>
-              )}
+              <div className="text-center text-gray-500 dark:text-gray-400 h-[200px] leading-[150px] select-none">
+                أدخل سعر الشراء لبدء الحساب
+              </div>
+            )}
             <CardContent className="space-y-6">
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-2">
@@ -467,8 +477,6 @@ export default function InstallmentCalculator() {
                     }`}
                   />
                 </div>
-
-                
               </div>
             </CardContent>
           </Card>
@@ -550,17 +558,8 @@ export default function InstallmentCalculator() {
                     )}
                 </div>
               )}
-
-              
             </CardContent>
           </Card>
-        </div>
-
-        <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>
-            يجب ملء حقلين على الأقل من الثلاثة (الدفعة المقدمة، القسط الشهري،
-            فترة السداد)
-          </p>
         </div>
       </div>
     </div>
