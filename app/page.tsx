@@ -403,10 +403,10 @@ export default function InstallmentCalculator() {
                             className="text-center p-3 flex items-center justify-between bg-slate-100 dark:bg-gray-600 rounded"
                           >
                             <div className="font-medium text-gray-600 dark:text-gray-300">
-                              {ele.installment_value} جنيه / شهر
+                              {formatNumber(parseNumber(ele.installment_value))} جنيه / شهر
                             </div>
                             <div className="font-medium text-gray-600 dark:text-gray-300">
-                              {ele.repayment_period} أشهر
+                              {formatNumber(parseNumber(String(ele.repayment_period)))} أشهر
                             </div>
                           </div>
                         ))}
@@ -540,7 +540,7 @@ export default function InstallmentCalculator() {
                               عدد الأقساط
                             </div>
                             <div className="text-lg font-bold">
-                              {parseNumber(repaymentPeriod ?? "")} شهر
+                              {formatNumber(parseNumber(repaymentPeriod ?? ""))} شهر
                             </div>
                           </div>
                           <div className="text-center p-3 bg-white dark:bg-gray-700 rounded">
