@@ -115,15 +115,6 @@ export default function InstallmentCalculator() {
       setMonthlyInstallment(calculatedInstallment.toFixed(2));
       newCalculatedField = "installment";
     } else if (
-      monthlyInstallment &&
-      repaymentPeriod &&
-      !downPayment &&
-      isFocus !== "down"
-    ) {
-      calculatedDown = calculateDownPayment(price, installment, period);
-      setDownPayment(calculatedDown.toFixed(2));
-      newCalculatedField = "down";
-    } else if (
       downPayment &&
       monthlyInstallment &&
       !repaymentPeriod &&
@@ -367,10 +358,16 @@ export default function InstallmentCalculator() {
                     id="downPayment"
                     type="number"
                     placeholder="أدخل الدفعة المقدمة"
-                    value={downPayment || ""}
+                    value={downPayment === "0" ? "" : downPayment || ""}
                     onFocus={() => setIsFocus("down")}
                     onBlur={() => setIsFocus("")}
-                    onChange={(e) => setDownPayment(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value === "") {
+                        setDownPayment("0");
+                      } else {
+                        setDownPayment(e.target.value);
+                      }
+                    }}
                     className={`text-right ${
                       calculatedField === "down"
                         ? "bg-green-50 border-green-200"
