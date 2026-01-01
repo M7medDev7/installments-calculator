@@ -25,7 +25,7 @@ export default function InstallmentCalculator() {
     missingAmount: number;
   } | null>(null);
 
-  const MONTHLY_PROFIT_RATE = 0.03; // 3.3% monthly
+  const MONTHLY_PROFIT_RATE = 0.035; // 3.5% monthly
 
   const parseNumber = (value: string): number => {
     return Number.parseFloat(value) || 0;
